@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/ROSHINI S/sales-intelligence-analytics/sales_database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1621"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="sales" custom_title="0" dock_id="1" table="4,5:mainsales"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">
+-- 1. View the first 10 sales records
+SELECT *
+FROM sales
+LIMIT 10;
+
+-- 2. Calculate total sales, profit and quantity
+SELECT
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS total_profit,
+    SUM(Quantity) AS total_quantity
+FROM sales;
+
+-- 3. Find profit by product category
+SELECT
+    Category,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales
+GROUP BY Category
+ORDER BY total_profit DESC;
+
+-- 4. Find profit by region
+SELECT
+    Region,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales
+GROUP BY Region
+ORDER BY total_profit DESC;
+
+-- 5. Find sales by year
+SELECT
+    strftime('%Y', Order_Date) AS sales_year,
+    ROUND(SUM(Sales), 2) AS total_sales
+FROM sales
+GROUP BY sales_year
+ORDER BY sales_year;
+
+SELECT
+    Discount,
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS total_profit,
+    ROUND(AVG(Profit), 2) AS average_profit
+FROM sales
+GROUP BY Discount
+ORDER BY Discount;
+
+SELECT
+    Product,
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales
+GROUP BY Product
+ORDER BY total_profit DESC
+LIMIT 10;
+
+
+-- 7. Monthly sales analysis
+SELECT
+    strftime('%Y-%m', Order_Date) AS sales_month,
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales
+GROUP BY sales_month
+ORDER BY sales_month;
+
+-- 8. Top 10 customers by sales
+SELECT
+    Customer_ID,
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales
+GROUP BY Customer_ID
+ORDER BY total_sales DESC
+LIMIT 10;
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
